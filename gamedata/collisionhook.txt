@@ -1,0 +1,37 @@
+"Games"
+{
+    "csgo"
+    {
+        "Functions"
+        {
+            "PassEntityFilter"
+            {
+                "signature"        "PassEntityFilter"
+                "callconv"        "cdecl"
+                "return"        "bool"
+                "this"            "ignore"
+                "arguments"
+                {
+                    "a1"
+                    {
+                        "type"    "cbaseentity"
+                    }
+                    "a2"
+                    {
+                        "type"    "cbaseentity"
+                    }
+                }
+            }
+        }
+        "Signatures"
+        {
+            "PassEntityFilter"
+            {
+                "library"	"server"
+				"windows"	"\x56\x8B\xF2\x57\x8B\xF9\x85\xF6\x74\x2A\x3B\xFE"
+				"linux"		"\x55\xB8\x01\x00\x00\x00\x89\xE5\x83\xEC\x38\x89\x5D\xF4"
+            }
+        }
+    }
+} 
+
