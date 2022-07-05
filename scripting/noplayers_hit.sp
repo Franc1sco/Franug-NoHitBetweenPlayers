@@ -3,11 +3,9 @@
 #include <dhooks>
 
 
-#define VERSION "0.1"
+#define VERSION "0.2"
 
-bool cutting[MAXPLAYERS + 1];
-
-Handle timers[MAXPLAYERS + 1];
+Handle activeTimer[MAXPLAYERS + 1] = null;
 
 public Plugin:myinfo =
 {
@@ -40,8 +38,7 @@ public OnPluginStart()
 
 public void OnClientDisconnect(int client)
 {
-	delete timers[client];
-	cutting[client] = false;
+	delete activeTimer[client];
 }
 
 // use only new syntax status yeah i know, soon, just lazy :D
@@ -54,15 +51,13 @@ public EventWeaponFire(Handle:event,const String:name[],bool:dontBroadcast)
 		return;
 		
 	// give totally ignore players collision during a 0.1 for ignore knife hit but keep the block between players
-	cutting[client] = true;
-	delete timers[client];
-	timers[client] = CreateTimer(0.1, Timer_Done, client);
+	delete activeTimer[client];
+	activeTimer[client] = CreateTimer(0.1, Timer_Done, client);
 } 
 
 public Action Timer_Done(Handle timer, int client)
 {
-	timers[client] = null;
-	cutting[client] = false;	
+	activeTimer[client] = null;
 }
 
 public MRESReturn detour_pre(Handle hReturn, Handle hParams)
@@ -79,7 +74,7 @@ public MRESReturn detour_pre(Handle hReturn, Handle hParams)
 	if(!IsValidClient(ent1) || !IsValidClient(ent2) || ent1 == ent2)
 		return MRES_Ignored;
 	
-	if(!cutting[ent1] && !cutting[ent2])
+	if(activeTimer[ent1] == null && activeTimer[ent2] == null)
 		return MRES_Ignored;
 		
 	//
@@ -95,4 +90,3 @@ stock bool:IsValidClient( client )
      
     return false; 
 }
-
